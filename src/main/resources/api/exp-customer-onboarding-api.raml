@@ -1,0 +1,120 @@
+#%RAML 1.0
+title: Exp-Customer-Onboarding-API
+description: This Api allows customer to insert the details in to Bank database
+
+uses:
+  libr: libarary/library.raml
+types:
+  insert: !include /dataType/insert-records-dataType.raml
+  update: !include /dataType/update-records-dataType.raml
+  error: !include /dataType/errorDatatype.raml
+  success: !include /dataType/200-dataType.raml
+
+securitySchemes:
+  customSecurity: !include security/securityScheme.raml
+securedBy:
+  - customSecurity
+
+/customer-insert:
+  post:
+    is: [libr.headers]
+    body:
+      application/json: 
+        type: insert
+        example: !include examples/request.raml          
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/200-success.raml
+      400:
+        body:
+          application/json:
+            type: error
+            example: !include examples/400-error.raml
+      404:
+        body:
+          application/json:
+            type: error
+            example: !include examples/404-error.raml
+      500:
+        body:
+          application/json:
+            type: error
+            example: !include examples/500-error.raml
+
+/customer-details:
+  get:
+    is: [libr.headers]
+    responses:
+      200:
+        body:
+          application/json:
+             example: !include examples/request.raml
+  /{accountNumber}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/request.raml
+/customer-update:
+    put:  
+      is: [libr.headers]
+      body:
+        application/json:
+          type: update
+          example: !include examples/request.raml
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/200-success.raml
+        400:
+          body:
+            application/json:
+              type: error
+              example: !include examples/400-error.raml
+        404:
+          body:
+            application/json:
+              type: error
+              example: !include examples/404-error.raml
+        500:
+          body:
+            application/json:
+              type: error
+              example: !include examples/500-error.raml
+/customer-delete:
+  delete:
+    is: [libr.headers]
+    headers:
+      accountNumber:
+        type: string
+        required: true         
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/delete-success-response.raml
+      400:
+        body:
+          application/json:
+            type: error
+            example: !include examples/400-error.raml
+      404:
+        body:
+          application/json:
+            type: error
+            example: !include examples/404-error.raml
+      500:
+        body:
+          application/json:
+            type: error
+            example: !include examples/500-error.raml
+
+
+            
+      
+           
+    
